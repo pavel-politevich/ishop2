@@ -7,10 +7,9 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 
-
 @Component
 public class AppInterceptor implements HandlerInterceptor {
-	
+
 	private static final String LAST_REQUEST_PARAM = "lastRequest";
 
 	@Override
@@ -32,12 +31,19 @@ public class AppInterceptor implements HandlerInterceptor {
 			throws Exception {
 		// TODO Auto-generated method stub
 		HandlerInterceptor.super.afterCompletion(request, response, handler, ex);
-		
-		if("GET".equalsIgnoreCase(request.getMethod())) {
-			request.getSession(true).setAttribute(LAST_REQUEST_PARAM, request.getRequestURI() + "?" + request.getQueryString());
+
+		if ("GET".equalsIgnoreCase(request.getMethod())) {
+
+			if (request.getQueryString() != null) {
+				request.getSession(true).setAttribute(LAST_REQUEST_PARAM,
+						request.getServletPath() + "?" + request.getQueryString());
+
+			} else {
+				request.getSession(true).setAttribute(LAST_REQUEST_PARAM, request.getServletPath());
+
+			}
 		}
-		
-		
+
 	}
 
 }

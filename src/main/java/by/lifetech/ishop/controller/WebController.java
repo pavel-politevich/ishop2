@@ -7,7 +7,6 @@ import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -74,11 +73,10 @@ public class WebController {
 	public String changeLocale(HttpSession session, @RequestParam("local") String local) {
 
 		session.setAttribute("local", local);
-		System.out.println("*********" + local + " --- "  + session.getAttribute("lastRequest").toString());
 		
 		if (session.getAttribute("lastRequest") != null)
         {
-            return "redirect:.../" + session.getAttribute("lastRequest").toString();
+            return "redirect:" + session.getAttribute("lastRequest").toString();
         }
         else {
         	return "redirect:/showMain";
