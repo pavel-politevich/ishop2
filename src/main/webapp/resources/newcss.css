@@ -1,0 +1,279 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/*
+    Created on : 08.05.2020, 16:05:12
+    Author     : Pavel.Politevich
+*/
+
+html,
+body {
+  height: 100%;
+}
+#wrap {
+  min-height: 100%;
+}
+main {
+  padding-bottom: 100px;
+}
+footer {
+  margin-top: -45px;
+  height: 45px;
+  padding : 5px;
+  background-color:Yellow;
+  color:Green;
+}
+
+header
+{
+   height: 80px;
+   	background-color:Gray;
+   	color: white;
+   	text-align:left;
+   	font-size: 250%;
+}
+
+.menu_line
+{
+	background-color: yellow;
+	height: 30px;
+	padding-left:10px;
+}
+
+#menu_line td
+{
+	text-align:center;
+}
+
+#menu_line td.right_list
+{
+	text-align:right;
+	padding-right: 15pt;
+}
+
+.header_panel
+{
+	height: 80px;
+	background-color:Gray;
+	color: white;
+	text-align:left;
+	font-size: 250%;
+}
+
+.login_container
+{
+    background-color:Yellow;
+    width: 200px;
+    padding: 50px;
+    margin: auto;
+}
+
+.languages
+{
+    background-color:Yellow;
+    text-align: right;
+    float: right;
+    margin : 15px;
+}
+
+.registration_container
+{
+    background-color:Yellow;
+    width: 300px;
+    padding: 50px;
+    margin: auto;
+}
+
+.registration_container table
+{
+    border :0;
+}
+
+
+.Absolute-Center
+{
+  margin: auto;
+  position: absolute;
+  top: 0; left: 0; bottom: 0; right: 0;
+}
+
+.register_block
+{
+    margin-top: 20px;
+    text-align: center;
+}
+
+.menu_left
+{
+	background-color:Yellow;
+	width : 80%;
+	padding:10px;
+	height: 300px;
+}
+
+.footer_n
+{
+	background-color:Yellow;
+	color:Green;
+	height:45px;
+	padding:10px;
+}
+
+.menu_itm
+{
+	background-color:Lime;
+	padding-left:5px;
+	padding-bottom:3px;
+}
+
+.login_fail_message
+{
+    color: Red;
+    text-align: center;
+}
+
+.item_block
+{
+    width : 80%;
+    padding:10px;
+    margin : 10px;
+    height: 100px;
+    border-style: solid;
+    border-color: gray;
+}
+
+.item_img_big
+{
+    height: 250px;
+    width: 250px;
+    border-style: solid;
+    border-color: yellow;
+}
+
+.item_desc
+{
+    margin-left: 50px;
+}
+
+.item_desc_price
+{
+    color: Red;
+    text-align: left;
+    font-size: 200%;
+}
+
+.cart_item
+{
+    width : 80%;
+    padding:10px;
+    margin : 10px;
+    border-style: solid;
+    border-color: gray;
+}
+
+.rating-result {
+	width: 265px;
+	margin: 0 auto;
+}
+.rating-result span {
+	padding: 0;
+	font-size: 40px;
+	line-height: 1;
+	color: lightgrey;
+	text-shadow: 1px 1px #bbb;
+}
+.rating-result > span:before {
+	content: '★';
+}
+.rating-result > span.active {
+	color: gold;
+	text-shadow: 1px 1px #c60;
+}
+
+.rating-mini {
+	display: inline-block;
+	font-size: 0;
+}
+.rating-mini span {
+	padding: 0;
+	font-size: 20px;
+	line-height: 1;
+	color: lightgrey;
+}
+.rating-mini > span:before {
+	content: '★';
+}
+.rating-mini > span.active {
+	color: gold;
+}
+
+
+.rating-area {
+	overflow: hidden;
+	width: 265px;
+	margin: 0 auto;
+}
+.rating-area:not(:checked) > input {
+	display: none;
+}
+.rating-area:not(:checked) > label {
+	float: right;
+	width: 42px;
+	padding: 0;
+	cursor: pointer;
+	font-size: 50px;
+	line-height: 50px;
+	color: lightgrey;
+	text-shadow: 1px 1px #bbb;
+}
+.rating-area:not(:checked) > label:before {
+	content: '★';
+}
+.rating-area > input:checked ~ label {
+	color: gold;
+	text-shadow: 1px 1px #c60;
+}
+.rating-area:not(:checked) > label:hover,
+.rating-area:not(:checked) > label:hover ~ label {
+	color: gold;
+}
+.rating-area > input:checked + label:hover,
+.rating-area > input:checked + label:hover ~ label,
+.rating-area > input:checked ~ label:hover,
+.rating-area > input:checked ~ label:hover ~ label,
+.rating-area > label:hover ~ input:checked ~ label {
+	color: gold;
+	text-shadow: 1px 1px goldenrod;
+}
+.rate-area > label:active {
+	position: relative;
+}
+
+
+.comment_text
+{
+    resize: none;
+    width: 90%;
+    height: 80px;
+}
+
+.reviewList
+{
+    width: 90%;
+    border: 1px solid yellow;
+    border-spacing: 7px;
+}
+
+.confirm_comment
+{
+    resize: none;
+    width: 300px;
+    height: 80px;
+}
+
+.confirm_tbl
+{
+    border-spacing: 10px 20px;
+}
