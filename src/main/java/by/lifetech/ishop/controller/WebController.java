@@ -19,8 +19,13 @@ import by.lifetech.ishop.service.exception.ServiceException;
 @RequestMapping("/")
 public class WebController {
 
-	@Autowired
 	private ItemService itemService;
+
+	@Autowired
+	public WebController(ItemService itemService) {
+		super();
+		this.itemService = itemService;
+	}
 
 	@RequestMapping("/showMain")
 	public String mainPageCommand(Model theModel, HttpSession session) {
@@ -50,6 +55,19 @@ public class WebController {
 	public String catalogPageCommand(Model theModel) {
 
 		return "catalog";
+	}
+	
+	
+	@RequestMapping("/showItemInfo")
+	public String getItemById(Model theModel, @RequestParam("itemId") int itemId) {
+
+		try {
+			Item item = itemService.getItem(itemId);
+			theModel.addAttribute("item", item);
+		} catch (ServiceException e) {
+			throw new ControllerRuntimeException(e);
+		}
+		return "itemInfo";
 	}
 	
 	

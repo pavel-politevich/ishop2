@@ -64,10 +64,14 @@
                             	
                             	
                                 <div class="item_block">
+                                
+	                                <c:url var="openLink" value="/showItemInfo">
+										<c:param name="itemId" value="${element.itemId}" />
+									</c:url>
 
                                     <table style="width:100%;">
                                         <tr>
-                                            <td style="width:75%"><b><a href="Controller?command=show_item&id=${element.itemId}">${element.nameFull}</a></b></td>
+                                            <td style="width:75%"><b><a href="${openLink}">${element.nameFull}</a></b></td>
                                             <td style="width:25%">
                                                 ${priceLabel} ${element.price} ${priceCurrency} 
                                             </td>

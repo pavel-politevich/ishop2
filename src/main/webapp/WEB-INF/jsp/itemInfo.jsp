@@ -69,14 +69,23 @@
                                                 <p>${requestScope.item.manufacturer}</p>
                                                 <p>${requestScope.item.description}</p>
                                                 <div>
-                                                    ${ratingLabel} ${requestScope.item.rating}
+                                                
+                                                <c:set var="avgRating" value="${0}" />
+                       							<c:set var="cntReviews" value="${0}" />
+                          							
+                          						<c:forEach items="${requestScope.item.itemReviews}" var="elementReviews">
+					                            	<c:set var="cntReviews" value="${cntReviews + 1}" />
+					                            	<c:set var="avgRating" value="${(elementReviews.rate + avgRating) / cntReviews}" />
+					                            </c:forEach>
+							                            
+                                                    ${ratingLabel} ${avgRating}
 
                                                     <div class="rating-mini">
-                                                        <span <c:if test="${requestScope.item.rating >= 1}">class="active"</c:if>></span>
-                                                        <span <c:if test="${requestScope.item.rating >= 2}">class="active"</c:if>></span>
-                                                        <span <c:if test="${requestScope.item.rating >= 3}">class="active"</c:if>></span>
-                                                        <span <c:if test="${requestScope.item.rating >= 4}">class="active"</c:if>></span>
-                                                        <span <c:if test="${requestScope.item.rating >= 5}">class="active"</c:if>></span>
+                                                        <span <c:if test="${avgRating >= 1}">class="active"</c:if>></span>
+                                                        <span <c:if test="${avgRating >= 2}">class="active"</c:if>></span>
+                                                        <span <c:if test="${avgRating >= 3}">class="active"</c:if>></span>
+                                                        <span <c:if test="${avgRating >= 4}">class="active"</c:if>></span>
+                                                        <span <c:if test="${avgRating >= 5}">class="active"</c:if>></span>
                                                     </div>
                                                 </div>
 
@@ -96,7 +105,7 @@
                                             <form action="Controller" method="post">
                                                 <input type="hidden" name="command" value="add_to_cart" />
                                                 <input type="hidden" name="itemId" value="${requestScope.item.itemId}" />
-                                                <input type="number" size="3" name="count" min="1" max="${requestScope.item.count}" value="1">
+                                                <input type="number" size="3" name="count" min="1" max="${requestScope.item.itemStorage.count}" value="1">
                                                 <input type="submit" value="${addToCartBtn}" />
                                                 <br />
                                             </form>
@@ -121,12 +130,12 @@
 
                                     <p><b>${lastReviewsCaption}</b></p>
 
-                                    <c:forEach items="${requestScope.reviewList}" var="element">
+                                    <c:forEach items="${requestScope.item.itemReviews}" var="element">
 
                                         <table class="reviewList">
                                             <tr>
                                                 <td>
-                                                    <b>${element.userName}</b>
+                                                    <b>${element.user.name}</b>
                                                     <br />
                                                     ${element.reviewDate}
                                                 </td>

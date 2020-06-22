@@ -18,10 +18,15 @@ import by.lifetech.ishop.service.exception.ServiceException;
 @Service
 public class ItemServiceImpl implements ItemService {
 	
-	@Autowired
 	private ItemDAO itemDAO;
 
-	//@Override
+	@Autowired
+	public ItemServiceImpl(ItemDAO itemDAO) {
+		super();
+		this.itemDAO = itemDAO;
+	}
+
+
 	@Transactional
 	public List<Category> getCategories() throws ServiceException {
 
@@ -32,7 +37,7 @@ public class ItemServiceImpl implements ItemService {
 		}
 	}
 
-	//@Override
+
 	@Transactional
 	public List<Item> getItemsByCategory(int categoryId) throws ServiceException {
 		try {
@@ -42,19 +47,22 @@ public class ItemServiceImpl implements ItemService {
 		}
 	}
 
-	@Override
+	@Transactional
 	public Item getItem(int itemId) throws ServiceException {
-		// TODO Auto-generated method stub
-		return null;
+		try {
+			return itemDAO.getItem(itemId);
+		} catch (DAOException e) {
+			throw new ServiceException("Error while find Item by ID", e);
+		}
 	}
 
-	@Override
+	@Transactional
 	public boolean addItemReview(int userId, int itemId, byte rate, String comment) throws ServiceException {
 		// TODO Auto-generated method stub
 		return false;
 	}
 
-	@Override
+	@Transactional
 	public List<Review> getItemReviews(int itemId) throws ServiceException {
 		// TODO Auto-generated method stub
 		return null;

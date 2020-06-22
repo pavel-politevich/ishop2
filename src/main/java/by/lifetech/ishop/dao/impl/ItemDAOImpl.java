@@ -17,8 +17,13 @@ import by.lifetech.ishop.entity.Review;
 @Repository
 public class ItemDAOImpl implements ItemDAO {
 	
-	@Autowired
 	private SessionFactory sessionFactory;
+	
+	@Autowired
+	public ItemDAOImpl(SessionFactory sessionFactory) {
+		super();
+		this.sessionFactory = sessionFactory;
+	}
 
 	@Override
 	public List<Item> findItemsByCategory(int categoryID) throws DAOException {
@@ -43,8 +48,12 @@ public class ItemDAOImpl implements ItemDAO {
 
 	@Override
 	public Item getItem(int itemId) throws DAOException {
-		// TODO Auto-generated method stub
-		return null;
+		
+		Session currentSession = sessionFactory.getCurrentSession();
+		Query<Item> theQuery = currentSession.createQuery("from Item where itemId = :itemId", Item.class);
+		Item item = theQuery.setParameter("itemId", itemId).getSingleResult();
+		
+		return item;
 	}
 
 	@Override
@@ -58,5 +67,7 @@ public class ItemDAOImpl implements ItemDAO {
 		// TODO Auto-generated method stub
 		return null;
 	}
+
+
 
 }
