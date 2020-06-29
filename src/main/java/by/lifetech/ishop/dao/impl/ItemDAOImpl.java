@@ -1,5 +1,6 @@
 package by.lifetech.ishop.dao.impl;
 
+import java.util.Date;
 import java.util.List;
 
 import org.hibernate.Session;
@@ -13,6 +14,7 @@ import by.lifetech.ishop.dao.exception.DAOException;
 import by.lifetech.ishop.entity.Category;
 import by.lifetech.ishop.entity.Item;
 import by.lifetech.ishop.entity.Review;
+import by.lifetech.ishop.entity.User;
 
 @Repository
 public class ItemDAOImpl implements ItemDAO {
@@ -56,8 +58,18 @@ public class ItemDAOImpl implements ItemDAO {
 	}
 
 	@Override
-	public void addItemReview(int userId, int itemId, byte rate, String comment) throws DAOException {
-		// TODO Auto-generated method stub
+	public void addItemReview(User user, int itemId, byte rate, String comment) throws DAOException {
+		Session currentSession = sessionFactory.getCurrentSession();
+		
+		Item item = currentSession.get(Item.class, itemId);
+		Review review = new Review();
+		review.setItem(item);
+		review.setRate(rate);
+		review.setReviewDate(new Date());
+		review.setUser(user);
+		review.setComment(comment);
+		
+		currentSession.save(review);
 		
 	}
 

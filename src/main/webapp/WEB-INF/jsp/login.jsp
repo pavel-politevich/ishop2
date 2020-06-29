@@ -65,7 +65,7 @@
 
 
 						<div class="register_block">
-							<a href="Controller?command=go_to_register">${RegistrationName}</a>
+							<a href="<c:url value="/showRegister"/>">${RegistrationName}</a>
 						</div>
 					</form>
 				</div>

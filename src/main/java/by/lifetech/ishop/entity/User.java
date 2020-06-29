@@ -15,6 +15,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 
 @Entity
 @Table(name="users")
@@ -48,6 +50,7 @@ public class User implements Serializable {
     private String address;
     
     @Column(name="date_of_birth")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date dateOfBirth;
     
     @ManyToOne(cascade= {CascadeType.PERSIST, CascadeType.MERGE,

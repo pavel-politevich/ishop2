@@ -11,6 +11,7 @@ import by.lifetech.ishop.dao.exception.DAOException;
 import by.lifetech.ishop.entity.Category;
 import by.lifetech.ishop.entity.Item;
 import by.lifetech.ishop.entity.Review;
+import by.lifetech.ishop.entity.User;
 import by.lifetech.ishop.service.ItemService;
 import by.lifetech.ishop.service.exception.ServiceException;
 
@@ -57,9 +58,12 @@ public class ItemServiceImpl implements ItemService {
 	}
 
 	@Transactional
-	public boolean addItemReview(int userId, int itemId, byte rate, String comment) throws ServiceException {
-		// TODO Auto-generated method stub
-		return false;
+	public void addItemReview(User user, int itemId, byte rate, String comment) throws ServiceException {
+		try {
+			itemDAO.addItemReview(user, itemId, rate, comment);
+		} catch (DAOException e) {
+			throw new ServiceException("Error while find Item by ID", e);
+		}
 	}
 
 	@Transactional

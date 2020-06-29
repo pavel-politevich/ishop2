@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=utf-8"	pageEncoding="utf-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
@@ -161,7 +162,8 @@
                                 </td>
 
                                 <td>
-                                    <form action="Controller">
+                                	<c:url value="/addReview" var="urlVar" />
+                                    <form:form action="${urlVar}" method="post" enctype="utf8">
                                       <p><b>${addReviewCaption}</b></p>
 
                                       <div class="rating-area">
@@ -177,11 +179,10 @@
                                       	<label for="star-1" title="${ratingText} «1»"></label>
                                       </div>
 
-                                      <input type="hidden" name="command" value="add_review" />
                                       <input type="hidden" name="itemId" value="${requestScope.item.itemId}" />
                                       <p><textarea name="comment" class="comment_text"></textarea></p>
                                       <p><input type="submit" value="${addReviewBtn}"></p>
-                                    </form>
+                                    </form:form>
 
                                     <c:if test="${param.add_review == 'false'}">
                                         <p style="color: red">${reviewErrorText}</p>

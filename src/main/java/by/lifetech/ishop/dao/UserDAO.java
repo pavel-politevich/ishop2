@@ -5,5 +5,5 @@ import by.lifetech.ishop.entity.User;
 
 public interface UserDAO {
     void registration(User user) throws DAOException;
-    User signIn (String login, byte[] password) throws DAOException;
+    User getUserByLogin(String login) throws DAOException;
 }
