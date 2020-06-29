@@ -32,7 +32,10 @@ public class AppInterceptor implements HandlerInterceptor {
 		// TODO Auto-generated method stub
 		HandlerInterceptor.super.afterCompletion(request, response, handler, ex);
 
-		if ("GET".equalsIgnoreCase(request.getMethod())) {
+		if ("GET".equalsIgnoreCase(request.getMethod()) && !request.getServletPath().contains("resources")) {
+			System.out.println("test11111: " + request.getServletPath() + "?" + request.getQueryString());
+			System.out.println("test11111: " + request.getRequestURI() + "?" + request.getQueryString());
+
 
 			if (request.getQueryString() != null) {
 				request.getSession(true).setAttribute(LAST_REQUEST_PARAM,

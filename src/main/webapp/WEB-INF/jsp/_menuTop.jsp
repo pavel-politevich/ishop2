@@ -1,6 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=utf-8"	pageEncoding="utf-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
+<%@ taglib uri="http://www.springframework.org/tags" prefix="spring"%>
+<%@ taglib uri="http://www.springframework.org/security/tags" prefix="sec"%>
 
 
 
@@ -39,14 +41,26 @@
 
                         <a href="<c:url value="/showCart"/>">${CartName}</a> |
 
-                        <c:if test = "${sessionScope.user.name != null}">
-                            <c:out value = "${sessionScope.user.name}"/> |
-                            <a href="Controller?command=signout">${logoutName}</a>
-                        </c:if>
+						<sec:authorize access="authenticated" var="authenticated" />
 
-                        <c:if test = "${sessionScope.user.name == null}">
-                            <a href="Controller?command=go_to_login">${loginName}</a>
-                        </c:if>
+                     
+                        <c:choose>
+							<c:when test="${authenticated}">
+								<sec:authentication property="name" /> |
+                            	
+                            	<a id="logout" href="#" onclick="document.getElementById('logout-form').submit();">${logoutName}</a>
+                            	
+                            	<form id="logout-form" action="<c:url value="/logout"/>" method="POST">
+									<sec:csrfInput/>
+								</form>
+                            	
+							</c:when>
+							<c:otherwise>
+								<a href="<c:url value="/login"/>">${loginName}</a>
+							</c:otherwise>
+						</c:choose>
+                        
+                        
                     </td>
 
                 </tr>

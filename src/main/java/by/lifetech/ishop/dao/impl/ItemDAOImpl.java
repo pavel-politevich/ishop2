@@ -21,7 +21,6 @@ public class ItemDAOImpl implements ItemDAO {
 	
 	@Autowired
 	public ItemDAOImpl(SessionFactory sessionFactory) {
-		super();
 		this.sessionFactory = sessionFactory;
 	}
 

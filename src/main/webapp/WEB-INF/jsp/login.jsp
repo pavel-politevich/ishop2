@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=utf-8"	pageEncoding="utf-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
+<%@ taglib uri="http://www.springframework.org/security/tags" prefix="sec" %>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 
@@ -47,7 +48,7 @@
                 </c:if>
 
 				<div class="login_container">
-					<form action="Controller" method="post">
+					<form action="<c:url value="/login"/>" method="post">
 						<input type="hidden" name="command" value="signIn" />
 						<label for="username">${LabelLoginName}</label>
 						<input type="text" id="username" name="username" required>
@@ -57,6 +58,8 @@
 
 						<br />
 						<br />
+						
+						<sec:csrfInput />
 
 						<input class="submitLogin" type="submit" value="${BtnSubmitName}">
 
