@@ -3,7 +3,6 @@ package by.lifetech.ishop.entity;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.List;
-
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -62,9 +61,20 @@ public class Item implements Serializable {
     @OneToOne(mappedBy = "item", cascade = { CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST,
 			CascadeType.REFRESH })
     private Storage itemStorage;
+    
+
+    
+    
+    @OneToMany(mappedBy="item",
+			   cascade= {CascadeType.PERSIST, CascadeType.MERGE,
+						 CascadeType.DETACH, CascadeType.REFRESH})
+	private List<OrderDetail> orderDetails;
 
 
-    public Item () {}
+    
+
+
+	public Item () {}
 
 
 	public int getItemId() {
@@ -165,7 +175,18 @@ public class Item implements Serializable {
 	public void setItemStorage(Storage itemStorage) {
 		this.itemStorage = itemStorage;
 	}
+	
 
+
+	public List<OrderDetail> getOrderDetails() {
+		return orderDetails;
+	}
+
+
+	public void setOrderDetails(List<OrderDetail> orderDetails) {
+		this.orderDetails = orderDetails;
+	}
+	
 
 	@Override
 	public int hashCode() {
@@ -227,6 +248,9 @@ public class Item implements Serializable {
 				+ nameFull + ", description=" + description + ", manufacturer=" + manufacturer + ", price=" + price
 				+ ", itemState=" + itemState + "]";
 	}
+
+
+	
 	
 	
 

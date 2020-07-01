@@ -24,6 +24,7 @@ import by.lifetech.ishop.controller.exception.ControllerRuntimeException;
 import by.lifetech.ishop.entity.Item;
 import by.lifetech.ishop.entity.User;
 import by.lifetech.ishop.service.ItemService;
+import by.lifetech.ishop.service.OrderService;
 import by.lifetech.ishop.service.UserService;
 import by.lifetech.ishop.service.exception.ServiceException;
 
@@ -33,13 +34,15 @@ public class WebController {
 
 	private ItemService itemService;
 	private UserService userService;
+	private OrderService orderService;
 	
 	
 	@Autowired
-	public WebController(ItemService itemService, UserService userService) {
+	public WebController(ItemService itemService, UserService userService, OrderService orderService) {
 		super();
 		this.itemService = itemService;
 		this.userService = userService;
+		this.orderService = orderService;
 	}
 
 
@@ -62,7 +65,20 @@ public class WebController {
 	}
 
 	@RequestMapping("/showCart")
-	public String cartPageCommand(Model theModel) {
+	public String cartPageCommand(HttpSession session, Model theModel) {
+		
+		if(session.getAttribute("orderId") != null) {
+			int orderId = (int) session.getAttribute("orderId");
+			
+			System.out.println("********orderId=" + orderId);
+			
+			try {
+				theModel.addAttribute("order", orderService.getOrder(orderId));
+				theModel.addAttribute("paymentTypes", orderService.getPaymentTypes());
+			} catch (ServiceException e) {
+				throw new ControllerRuntimeException(e);
+			}
+		}
 
 		return "cart";
 	}
@@ -163,6 +179,10 @@ public class WebController {
 
 		System.out.println("******* comment: " + comment);
 		
+		if(principal == null) {
+			return "redirect:/login";
+		}
+		
 		try {
 			User currentUser = userService.getUserByLogin(principal.getName());
 			System.out.println("!!!!!!! " + currentUser);
@@ -175,5 +195,94 @@ public class WebController {
 		
 		return "redirect:" + session.getAttribute("lastRequest").toString();
 	}
+	
+	
+	
+	@PostMapping(value="/addToCart")
+	public String addToCart(HttpSession session, Principal principal, 
+			@RequestParam("itemId") int itemId,
+			@RequestParam("count") int count) {
+		
+		if(principal == null) {
+			return "redirect:/login";
+		}
+		
+		
+		
+		try {
+			
+			User currentUser = userService.getUserByLogin(principal.getName());
+			int orderId;
+			
+			if(session.getAttribute("orderId") == null) {
+				System.out.println("**********" + currentUser.getUserId());
+				orderId = orderService.createEmptyOrder(currentUser.getUserId());
+				session.setAttribute("orderId", orderId);
+			}
+			else {
+				orderId = (int) session.getAttribute("orderId");
+			}
+			
+			orderService.addItem(orderId, itemId, count);
+			
+		} catch (ServiceException e) {
+			new ControllerRuntimeException(e);
+		}
+		
+		
+		return "redirect:" + session.getAttribute("lastRequest").toString();
+	}
+	
+	
+	@PostMapping(value="/deleteFromCart")
+	public String delFromCart(HttpSession session, Principal principal, Model theModel,
+			@RequestParam("itemId") int itemId) {
+		
+		if(principal == null) {
+			return "redirect:/login";
+		}
+				
+		try {
+			int orderId = (int) session.getAttribute("orderId");
+			orderService.deleteItem(orderId, itemId);
+						
+		} catch (ServiceException e) {
+			new ControllerRuntimeException(e);
+		}
+		
+		
+		return "redirect:/showCart";
+	}
+	
+	
+	
+	@PostMapping(value="/confirmOrder")
+	public String confirmOrder(RedirectAttributes redirectAttributes, HttpSession session, Principal principal,
+			@RequestParam("comment") String comment,
+			@RequestParam("address") String address,
+			@RequestParam("paymentType") int paymentType) {
+		
+		if(principal == null) {
+			return "redirect:/login";
+		}
+				
+		try {
+			int orderId = (int) session.getAttribute("orderId");
+			orderService.confirmOrder(orderId, comment, address, paymentType);
+			session.removeAttribute("orderId");
+			
+			redirectAttributes.addAttribute("confirm", "ok");
+			redirectAttributes.addAttribute("orderId", orderId);
+
+		} catch (ServiceException e) {
+			new ControllerRuntimeException(e);
+		}
+		
+		
+		return "redirect:/showCart";
+	}
+	
+	
+	
 
 }

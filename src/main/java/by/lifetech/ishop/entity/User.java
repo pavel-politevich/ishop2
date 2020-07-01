@@ -67,8 +67,15 @@ public class User implements Serializable {
 			   cascade= {CascadeType.PERSIST, CascadeType.MERGE,
 						 CascadeType.DETACH, CascadeType.REFRESH})
 	private List<Review> userReviews;
+	
+	@OneToMany(mappedBy="user",
+			   cascade= {CascadeType.PERSIST, CascadeType.MERGE,
+						 CascadeType.DETACH, CascadeType.REFRESH})
+	private List<Order> userOrders;
 
-    public User() {    }
+    
+
+	public User() {    }
 
 	public int getUserId() {
 		return userId;
@@ -164,6 +171,14 @@ public class User implements Serializable {
 
 	public void setUserReviews(List<Review> userReviews) {
 		this.userReviews = userReviews;
+	}
+	
+	public List<Order> getUserOrders() {
+		return userOrders;
+	}
+
+	public void setUserOrders(List<Order> userOrders) {
+		this.userOrders = userOrders;
 	}
 
 	@Override

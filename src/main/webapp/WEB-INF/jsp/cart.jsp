@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=utf-8"	pageEncoding="utf-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
+<%@ taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
@@ -60,7 +61,7 @@
                             <h2>${CartName}</h2>
 
 
-                            <c:if test="${empty requestScope.order.itemMap}">
+                            <c:if test="${empty requestScope.order.orderDetails}">
                                 ${cartEmptyText}
                             </c:if>
 
@@ -68,23 +69,28 @@
                                 <h3>${confirmOkMessage1} #${param.orderId}. ${confirmOkMessage2}</h3>
                             </c:if>
 
-                            <c:forEach items="${requestScope.order.itemMap}" var="entry">
+                            <c:forEach items="${requestScope.order.orderDetails}" var="entry">
 
 
                                 <div class = "cart_item">
 
                                     <table BORDER=0 WIDTH=100%>
                                         <tr>
-                                            <td width=55%><a href="Controller?command=show_item&id=${entry.key.itemId}">${entry.key.nameFull}</a></td>
-                                            <td width=10%>Цена: ${entry.key.price}</td>
-                                            <td width=15%>Количество: ${entry.value}</td>
-                                            <td width=10%>Сумма: ${entry.key.price * entry.value}</td>
+                                        	<c:url var="openLink" value="/showItemInfo">
+												<c:param name="itemId" value="${entry.item.itemId}" />
+											</c:url>
+											
+                                            <td width=55%><a href="${openLink}">${entry.item.nameFull}</a></td>
+                                            <td width=10%>Цена: ${entry.item.price}</td>
+                                            <td width=15%>Количество: ${entry.count}</td>
+                                            <td width=10%>Сумма: ${entry.item.price * entry.count}</td>
                                             <td>
-                                                <form action="Controller" method="post">
-                                                    <input type="hidden" name="command" value="del_from_cart" />
-                                                    <input type="hidden" name="itemId" value="${entry.key.itemId}" />
+                                            	
+                                            	<c:url value="/deleteFromCart" var="urlVar" />
+                                                <form:form action="${urlVar}" method="post">
+                                                    <input type="hidden" name="itemId" value="${entry.item.itemId}" />
                                                     <input type="submit" value="Удалить" />
-                                                </form>
+                                                </form:form>
                                             </td>
                                         </tr>
                                     </table>
@@ -94,12 +100,12 @@
 
                             </c:forEach>
 
-                            <c:if test="${not empty requestScope.order.itemMap}">
+                            <c:if test="${not empty requestScope.order.orderDetails}">
                                 <div class="order_confirm_block">
                                     <br />
                                     <hr>
-                                    <form action="Controller" method="post">
-                                        <input type="hidden" name="command" value="confirm_order" />
+                                    <c:url value="/confirmOrder" var="urlVar" />
+                                    <form:form action="${urlVar}" method="post">
 
                                         <table class="confirm_tbl" width=100% valign=top>
                                             <tr>
@@ -119,8 +125,8 @@
                                                     <label for="paymentType">${confirmPaymentType}</label>
                                                     <br /><br />
 
-                                                    <c:forEach items="${applicationScope.paymentTypesMap}" var="entry">
-                                                        <input type="radio" name="paymentType" value="${entry.value}" checked>${entry.value}<Br>
+                                                    <c:forEach items="${paymentTypes}" var="entry">
+                                                        <input type="radio" name="paymentType" value="${entry.id}" checked>${entry.descritpion}<Br>
                                                     </c:forEach>
 
                                                 </td>
@@ -137,7 +143,7 @@
 
 
 
-                                    </form>
+                                    </form:form>
                                 </div>
                             </c:if>
 

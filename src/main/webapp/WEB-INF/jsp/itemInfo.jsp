@@ -77,9 +77,10 @@
                           						<c:forEach items="${requestScope.item.itemReviews}" var="elementReviews">
 					                            	<c:set var="cntReviews" value="${cntReviews + 1}" />
 					                            	<c:set var="avgRating" value="${(elementReviews.rate + avgRating) / cntReviews}" />
+					                            	
 					                            </c:forEach>
 							                            
-                                                    ${ratingLabel} ${avgRating}
+                                                    ${ratingLabel} <fmt:formatNumber value="${avgRating}" maxFractionDigits="1"/>
 
                                                     <div class="rating-mini">
                                                         <span <c:if test="${avgRating >= 1}">class="active"</c:if>></span>
@@ -102,14 +103,13 @@
 
                                             <br />
 
-
-                                            <form action="Controller" method="post">
-                                                <input type="hidden" name="command" value="add_to_cart" />
+											<c:url value="/addToCart" var="urlVar" />
+                                            <form:form action="${urlVar}" method="post">
                                                 <input type="hidden" name="itemId" value="${requestScope.item.itemId}" />
                                                 <input type="number" size="3" name="count" min="1" max="${requestScope.item.itemStorage.count}" value="1">
                                                 <input type="submit" value="${addToCartBtn}" />
                                                 <br />
-                                            </form>
+                                            </form:form>
 
 
                                         </td>

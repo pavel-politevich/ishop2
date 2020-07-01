@@ -97,7 +97,8 @@
 			default-target-url="/showMain"
 			always-use-default-target="true"
 			authentication-failure-url="/login?login=fail"/>	
-	 	<security:intercept-url pattern="/**" access="ROLE_USER, ROLE_ADMIN, ROLE_ANONYMOUS" /> 
+	 	<security:intercept-url pattern="/addReview" access="ROLE_USER, ROLE_ADMIN" /> 
+	 	<security:intercept-url pattern="/**" access="ROLE_USER, ROLE_ADMIN, ROLE_ANONYMOUS" />
 	 	
 	 	<security:logout logout-url="/perform_logout" logout-success-url="/showMain"/>
 	 	<security:http-basic />
