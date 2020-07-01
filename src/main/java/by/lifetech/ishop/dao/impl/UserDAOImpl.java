@@ -16,6 +16,9 @@ import by.lifetech.ishop.entity.UserState;
 @Repository
 public class UserDAOImpl implements UserDAO {
 	
+	private static final String LOGIN_PARAM = "login";
+	private static final String HQL_GET_USER_BY_LOGIN = "from User where login = :login";
+	
 	private SessionFactory sessionFactory;
 	private PasswordEncoder encoder;
 
@@ -48,8 +51,8 @@ public class UserDAOImpl implements UserDAO {
 	public User getUserByLogin(String login) throws DAOException {
 		Session currentSession = sessionFactory.getCurrentSession();
 		
-		Query<User> theQuery = currentSession.createQuery("from User where login = :login", User.class);
-		User user = theQuery.setParameter("login", login).getSingleResult();
+		Query<User> theQuery = currentSession.createQuery(HQL_GET_USER_BY_LOGIN, User.class);
+		User user = theQuery.setParameter(LOGIN_PARAM, login).getSingleResult();
 		return user;
 	}
 

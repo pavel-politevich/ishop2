@@ -10,6 +10,7 @@ import org.springframework.web.servlet.ModelAndView;
 @Component
 public class AppInterceptor implements HandlerInterceptor {
 
+	private static final String RESOURCES_FOLDER = "resources";
 	private static final String LAST_REQUEST_PARAM = "lastRequest";
 
 	@Override
@@ -29,13 +30,10 @@ public class AppInterceptor implements HandlerInterceptor {
 	@Override
 	public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex)
 			throws Exception {
-		// TODO Auto-generated method stub
+
 		HandlerInterceptor.super.afterCompletion(request, response, handler, ex);
 
-		if ("GET".equalsIgnoreCase(request.getMethod()) && !request.getServletPath().contains("resources")) {
-			System.out.println("test11111: " + request.getServletPath() + "?" + request.getQueryString());
-			System.out.println("test11111: " + request.getRequestURI() + "?" + request.getQueryString());
-
+		if ("GET".equalsIgnoreCase(request.getMethod()) && !request.getServletPath().contains(RESOURCES_FOLDER)) {
 
 			if (request.getQueryString() != null) {
 				request.getSession(true).setAttribute(LAST_REQUEST_PARAM,

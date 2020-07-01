@@ -41,23 +41,14 @@ public class Category implements Serializable {
     public Category() {}
 
     
-    
-
-
     public int getCategoryId() {
 		return categoryId;
 	}
-
-
-
-
+    
 
 	public void setCategoryId(int categoryId) {
 		this.categoryId = categoryId;
 	}
-
-
-
 
 
 	public String getName() {
@@ -65,15 +56,9 @@ public class Category implements Serializable {
 	}
 
 
-
-
-
 	public void setName(String name) {
 		this.name = name;
 	}
-
-
-
 
 
 	public String getDescription() {
@@ -81,15 +66,9 @@ public class Category implements Serializable {
 	}
 
 
-
-
-
 	public void setDescription(String description) {
 		this.description = description;
 	}
-
-
-
 
 
 	public List<Item> getItem() {
@@ -98,14 +77,9 @@ public class Category implements Serializable {
 
 
 
-
-
 	public void setItem(List<Item> item) {
 		this.item = item;
 	}
-
-
-
 
 
 	@Override

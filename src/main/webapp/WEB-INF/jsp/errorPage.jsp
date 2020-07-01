@@ -38,7 +38,7 @@
 
                 <br /><br />
 
-                <a href="Controller?command=go_to_main">${errorLink}</a>
+                <a href="<c:url value="/showMain"/>">${errorLink}</a>
 
 			</main>
 		</div>

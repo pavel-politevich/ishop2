@@ -21,6 +21,20 @@ import by.lifetech.ishop.entity.PaymentType;
 @Repository
 public class OrderDAOImpl implements OrderDAO {
 	
+	private static final String HQL_CONFIRM_ORDER_PROC = "confirm_order";
+
+	private static final String HQL_GET_PAYMENT_TYPES = "from PaymentType";
+
+	private static final String HQL_GET_ORDER_BY_ID = "from Order where id = :orderId and paymentType is null";
+
+	private static final String ORDER_ID_PARAM = "orderId";
+
+	private static final String ITEM_ID_PARAM = "itemId";
+
+	private static final String HQL_DELETE_ITEM_FROM_ORDER = "delete from OrderDetail where item.itemId = :itemId and order.id = :orderId";
+
+	private static final String HQL_CREATE_ORDER_PROC = "create_order";
+	
 	private SessionFactory sessionFactory;
 	
 	@Autowired
@@ -32,7 +46,7 @@ public class OrderDAOImpl implements OrderDAO {
 	@Override
 	public int createEmptyOrder(int userId) throws DAOException {
 		Session currentSession = sessionFactory.getCurrentSession();
-		StoredProcedureQuery  query = currentSession.createStoredProcedureCall("create_order")
+		StoredProcedureQuery  query = currentSession.createStoredProcedureCall(HQL_CREATE_ORDER_PROC)
 				.registerStoredProcedureParameter(1, Integer.class, ParameterMode.IN)
 				.registerStoredProcedureParameter(2, Integer.class, ParameterMode.OUT)
 				.setParameter(1, userId);
@@ -48,10 +62,7 @@ public class OrderDAOImpl implements OrderDAO {
 		
 		Order order = currentSession.get(Order.class, orderId);
 		Item item = currentSession.get(Item.class, itemId);
-		
 		List<OrderDetail> orderDetails = order.getOrderDetails();
-		
-		System.out.println("********** orderDetails before: " + orderDetails);
 		
 		OrderDetail orderDetail = new OrderDetail();
 		orderDetail.setItem(item);
@@ -59,31 +70,19 @@ public class OrderDAOImpl implements OrderDAO {
 		orderDetail.setCount(count);
 		orderDetail.setCost(item.getPrice().multiply(BigDecimal.valueOf(count)));
 		
-		orderDetails.add(orderDetail);
-		
-		System.out.println("********** orderDetails after: " + orderDetails);
-		
+		orderDetails.add(orderDetail);		
 		order.setOrderDetails(orderDetails);
 		
-		System.out.println("********** Order after: " + order);
-		
 		currentSession.save(orderDetail);
-		//currentSession.save(order);
 		
 	}
 
 	@Override
 	public void deleteItem(int orderId, int itemId) throws DAOException {
 		Session currentSession = sessionFactory.getCurrentSession();
-		/*
-		Order order = currentSession.get(Order.class, orderId);
-		Item item = currentSession.get(Item.class, itemId);
-		
-		List<OrderDetail> orderDetails = order.getOrderDetails();
-		orderDetails.remove();
-		*/
-		Query theQuery = currentSession.createQuery("delete from OrderDetail where item.itemId = :itemId and order.id = :orderId");
-		theQuery.setParameter("itemId", itemId).setParameter("orderId", orderId).executeUpdate();
+
+		Query theQuery = currentSession.createQuery(HQL_DELETE_ITEM_FROM_ORDER);
+		theQuery.setParameter(ITEM_ID_PARAM, itemId).setParameter(ORDER_ID_PARAM, orderId).executeUpdate();
 		
 	}
 
@@ -91,12 +90,8 @@ public class OrderDAOImpl implements OrderDAO {
 	public Order getOrder(int orderId) throws DAOException {
 		Session currentSession = sessionFactory.getCurrentSession();
 		
-		System.out.println("********** orderId: " + orderId);
-		
-		Query<Order> theQuery = currentSession.createQuery("from Order where id = :orderId and paymentType is null", Order.class);
-		return theQuery.setParameter("orderId", orderId).getSingleResult();
-		
-		//return currentSession.get(Order.class, orderId);
+		Query<Order> theQuery = currentSession.createQuery(HQL_GET_ORDER_BY_ID, Order.class);
+		return theQuery.setParameter(ORDER_ID_PARAM, orderId).getSingleResult();
 	}
 
 	@Override
@@ -108,7 +103,7 @@ public class OrderDAOImpl implements OrderDAO {
 	@Override
 	public List<PaymentType> getPaymentTypes() throws DAOException {
 		Session currentSession = sessionFactory.getCurrentSession();
-		Query<PaymentType> theQuery = currentSession.createQuery("from PaymentType", PaymentType.class);
+		Query<PaymentType> theQuery = currentSession.createQuery(HQL_GET_PAYMENT_TYPES, PaymentType.class);
 		return theQuery.getResultList();
 	}
 
@@ -116,9 +111,7 @@ public class OrderDAOImpl implements OrderDAO {
 	public void confirmOrder(int orderId, String comment, String address, int paymentType) throws DAOException {
 		Session currentSession = sessionFactory.getCurrentSession();
 		
-		System.out.println("********** paymentType: " + paymentType);
-		
-		StoredProcedureQuery  query = currentSession.createStoredProcedureCall("confirm_order")
+		StoredProcedureQuery  query = currentSession.createStoredProcedureCall(HQL_CONFIRM_ORDER_PROC)
 				.registerStoredProcedureParameter(1, String.class, ParameterMode.IN)
 				.registerStoredProcedureParameter(2, String.class, ParameterMode.IN)
 				.registerStoredProcedureParameter(3, String.class, ParameterMode.IN)

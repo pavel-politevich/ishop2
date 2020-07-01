@@ -19,7 +19,14 @@ import by.lifetech.ishop.entity.User;
 @Repository
 public class ItemDAOImpl implements ItemDAO {
 	
+	private static final String ITEM_ID_PARAM = "itemId";
+	private static final String HQL_GET_ITEM_BY_ID = "from Item where itemId = :itemId";
+	private static final String HQL_GET_ALL_CATEGORIES = "from Category";
+	private static final String CATEGORY_ID_PARAM = "categoryId";
+	private static final String HQL_GET_ITEMS_BY_CATEGORY_ID = "from Item where itemCategory.categoryId = :categoryId";
+	
 	private SessionFactory sessionFactory;
+	
 	
 	@Autowired
 	public ItemDAOImpl(SessionFactory sessionFactory) {
@@ -29,9 +36,8 @@ public class ItemDAOImpl implements ItemDAO {
 	@Override
 	public List<Item> findItemsByCategory(int categoryID) throws DAOException {
 		Session currentSession = sessionFactory.getCurrentSession();
-		
-		Query<Item> theQuery = currentSession.createQuery("from Item where itemCategory.categoryId = :categoryId", Item.class);
-		List<Item> items = theQuery.setParameter("categoryId", categoryID).getResultList();
+		Query<Item> theQuery = currentSession.createQuery(HQL_GET_ITEMS_BY_CATEGORY_ID, Item.class);
+		List<Item> items = theQuery.setParameter(CATEGORY_ID_PARAM, categoryID).getResultList();
 		
 		return items;
 	}
@@ -40,8 +46,7 @@ public class ItemDAOImpl implements ItemDAO {
 	public List<Category> getCategories() throws DAOException {
 		
 		Session currentSession = sessionFactory.getCurrentSession();
-		
-		Query<Category> theQuery = currentSession.createQuery("from Category", Category.class);
+		Query<Category> theQuery = currentSession.createQuery(HQL_GET_ALL_CATEGORIES, Category.class);
 		List<Category> categories = theQuery.getResultList();
 		
 		return categories;
@@ -51,8 +56,8 @@ public class ItemDAOImpl implements ItemDAO {
 	public Item getItem(int itemId) throws DAOException {
 		
 		Session currentSession = sessionFactory.getCurrentSession();
-		Query<Item> theQuery = currentSession.createQuery("from Item where itemId = :itemId", Item.class);
-		Item item = theQuery.setParameter("itemId", itemId).getSingleResult();
+		Query<Item> theQuery = currentSession.createQuery(HQL_GET_ITEM_BY_ID, Item.class);
+		Item item = theQuery.setParameter(ITEM_ID_PARAM, itemId).getSingleResult();
 		
 		return item;
 	}

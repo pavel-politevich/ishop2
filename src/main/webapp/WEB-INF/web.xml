@@ -15,6 +15,14 @@
 		</init-param>
 		<load-on-startup>1</load-on-startup>
 	</servlet>
+	
+	<context-param>
+		<param-name>contextConfigLocation</param-name>
+		<param-value>
+		/WEB-INF/securityContext.xml
+		/WEB-INF/applicationContext.xml
+		</param-value>
+	</context-param>
 
 
 	<listener>
@@ -61,36 +69,36 @@
 
 	<error-page>
 		<exception-type>java.lang.Error</exception-type>
-		<location>/general-error.html</location>
+		<location>/errors</location>
 	</error-page>
 	<error-page>
 		<exception-type>java.lang.Exception</exception-type>
-		<location>/general-error.html</location>
+		<location>/errors</location>
 	</error-page>
 	<error-page>
 		<!-- Missing login -->
 		<error-code>401</error-code>
-		<location>/general-error.html</location>
+		<location>/errors</location>
 	</error-page>
 	<error-page>
 		<!-- Forbidden directory listing -->
 		<error-code>403</error-code>
-		<location>/general-error.html</location>
+		<location>/errors</location>
 	</error-page>
 	<error-page>
 		<!-- Missing resource -->
 		<error-code>404</error-code>
-		<location>/Controller?command=wrong_request</location>
+		<location>/errors</location>
 	</error-page>
 	<error-page>
 		<!-- Uncaught exception -->
 		<error-code>500</error-code>
-		<location>/general-error.html</location>
+		<location>/errors</location>
 	</error-page>
 	<error-page>
 		<!-- Unsupported servlet method -->
 		<error-code>503</error-code>
-		<location>/general-error.html</location>
+		<location>/errors</location>
 	</error-page>
 
 </web-app>
